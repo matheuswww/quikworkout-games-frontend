@@ -1,0 +1,83 @@
+.sidebar {
+  width: 240px;
+  background-color: var(--sidebar-bg);
+  padding: 4rem 1rem;
+  box-shadow: var(--shadow);
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 10;
+  position: absolute;
+  height: 100vh;
+}
+
+.closed {
+  transform: translateX(-100%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.logo {
+  color: var(--highlight);
+  font-size: 1.5rem;
+  margin-top: .5rem;
+  margin-bottom: .9rem;
+  text-align: center;
+  font-weight: 700;
+  user-select: none;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar nav li {
+  font-family: var(--font);
+  font-weight: var(--fontWeight);
+  padding: 0.8rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition);
+  color: var(--text);
+  font-size: 1rem;
+  user-select: none;
+}
+
+.sidebar nav li:hover {
+  background-color: rgba(255, 79, 154, 0.2);
+}
+
+.sidebar nav li.active {
+  background-color: var(--highlight);
+  color: white;
+  font-weight: 700;
+}
+
+.toggleButton {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background-color: var(--highlight);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+  z-index: 20;
+  transition: background-color var(--transition);
+}
+
+.toggleButton:hover {
+  background-color: #e04489;
+}

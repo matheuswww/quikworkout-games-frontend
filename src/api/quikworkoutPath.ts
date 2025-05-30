@@ -1,0 +1,1 @@
+export const quikworkoutPath = process.env.NEXT_PUBLIC_QUIKWORKOUT_URL || "";

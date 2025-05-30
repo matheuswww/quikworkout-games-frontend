@@ -1,0 +1,24 @@
+:root {
+  --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --fontWeight: 600;
+  --bg-dark: #111111;
+  --sidebar-bg: #121214;
+  --text: #f0f0f5;
+  --highlight: #d13778;
+  --input-bg: #2f2f45;
+  --border-radius: 12px;
+  --transition: 0.3s ease;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+}
