@@ -21,7 +21,7 @@ export default function Menu() {
     }
 
     const main = document.getElementById('main')
-    if (main instanceof HTMLElement && window.screen.width > 1000) {
+    if (main instanceof HTMLElement) {
       if (isOpen) {
         main.style.pointerEvents = 'none'
         main.style.opacity = '.1'

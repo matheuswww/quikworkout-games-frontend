@@ -10,8 +10,8 @@ const nextConfig = {
    },
    {
     protocol: 'https',
-    hostname: 'sandbox.api.pagseguro.com',
-    pathname: '/qrcode/**',
+    hostname: 'i.vimeocdn.com',
+    pathname: '/video/**',
    },
    {
     protocol: 'https',

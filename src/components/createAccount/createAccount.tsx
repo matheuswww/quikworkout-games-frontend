@@ -13,6 +13,7 @@ import PopupError from "../popupError/popupError";
 import RecaptchaForm from "@/funcs/recaptchaForm";
 import SpinLoading from "../spinLoading/spinLoading";
 import { quikworkoutPath } from "@/api/quikworkoutPath";
+import { deleteCookie } from "@/action/deleteCookie";
 
 function validateCPF(cpf: string): boolean {
   let sum = 0
@@ -153,6 +154,7 @@ export default function CreateAccountForm({...props}: props) {
       return
     }
     if (res == 401) {
+      await deleteCookie("userProfile")
       window.location.href = quikworkoutPath+'/auth/entrar'
       return
     }
@@ -162,7 +164,6 @@ export default function CreateAccountForm({...props}: props) {
   }
 
   useEffect(() => {
-    console.log(quikworkoutPath)
     if (props.userCookieName == undefined || props.userCookieVal == undefined) {
       window.location.href = quikworkoutPath+'/auth/entrar'
       return

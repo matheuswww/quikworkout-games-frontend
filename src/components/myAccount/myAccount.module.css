@@ -1,0 +1,340 @@
+.main {
+  margin-top: 30px;
+  padding: 2rem;
+  max-width: 1400px;
+  transition: .3s;
+  justify-self: center;
+  width: 100%;
+}
+
+.lowOpacity {
+  opacity: .1;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  color: white;
+  position: relative;
+}
+
+.sidebar {
+  width: 16rem;
+  background-color: #18181b;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-right: 1px solid #27272a;
+}
+
+.navItem {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navItem:hover {
+  color: #ec4899;
+}
+
+.activeNav {
+  font-weight: var(--fontWeight);
+  color: #ec4899;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-family: var(--font);
+  font-weight: var(--fontWeight);
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.userName {
+  font-size: .8rem;
+  font-family: var(--font);
+  color: rgb(178 178 178);
+}
+
+.user_time {
+  position: relative;
+  left: 5px;
+}
+
+.titleCard {
+  font-size: 1.2rem;
+  font-family: var(--font);
+  font-weight: var(--fontWeight);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.h2 {
+  margin-top: 2rem;
+  margin-bottom: 15px;
+}
+
+.profile {
+  background-color: #18181b;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.avatar {
+  width: 100px;
+  height: auto;
+  border-radius: 100%;
+  object-fit: cover;
+}
+
+.avatarSkeleton {
+  border-radius: 100%;
+}
+
+.userImage {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+.userInfo {
+  flex: 1;
+}
+
+.field {
+  font-weight: 600;
+}
+
+.userNameField, .userUserField {
+  position: relative;
+  left: -10px;
+}
+
+.userField {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  padding: 5px;
+  font-family: var(--font);
+}
+
+.earnings {
+  font-weight: var(--fontWeight);
+  font-family: var(--font);
+  font-size: 1.25rem;
+}
+
+.link {
+  background-color: var(--highlight);
+  color: white;
+  border: none;
+  font-size: .9rem;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  margin-bottom: 2rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: var(--font);
+  font-weight: 600;
+}
+
+.link:hover {
+  background-color: #b8195c;
+}
+
+.editions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: #18181b;
+  margin: 5px 10px;
+  border-radius: 12px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: white;
+  width: max-content;
+}
+
+.videoContainer {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.videoThumb {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.videoDuration {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 2px 6px;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.videoInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.userContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.videoTitle {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-family: var(--font);
+}
+
+.avatarVideo {
+  width: 40px;
+  height: auto;
+  border-radius: 100%;
+  object-fit: cover;
+}
+
+.avatarVideoSkeleton {
+  border-radius: 100%;
+}
+
+.videoUserImage {
+  width: 40px;
+  height: 40px;
+  position: relative;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #aaa;
+  font-family: var(--font);
+  white-space: nowrap;
+}
+
+.clockIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+}
+
+.placement {
+  color: white;
+  font-family: var(--font);
+  font-weight: var(--fontWeight);
+}
+
+.gains {
+  color: white;
+  font-family: var(--font);
+  font-weight: var(--fontWeight);
+}
+
+.analisy {
+  color: rgb(212 212 212);
+  font-weight: bold;
+  font-family: var(--font);
+}
+
+.userInfosSkeleton {
+  border-radius: 5px;
+  width: 200px;
+  height: 25px;
+  margin: 5px;
+  background-color: #131313;
+}
+
+.userImgSkeleton {
+  width: 100px;
+  height: 100px;
+  border-radius: 100% !important;
+  background-color: #131313;
+}
+
+.infosSkeleton {
+  flex: 1 1;
+}
+
+.green {
+  color: #22c55e;
+  font-weight: var(--fontWeight);
+}
+
+.yellow {
+  color: rgb(230, 230, 54);
+  font-weight: var(--fontWeight);
+}
+
+.userContentSkeleton span {
+  display: block;
+  border-radius: 6px;
+  width: 200px;
+  height: 25px;
+  margin: 5px;
+  background-color: #131313;
+}
+
+.userContentSkeleton {
+  margin-top: 10px;
+} 
+
+.videoUserImageSkeleton {
+  width: 350px;
+  aspect-ratio: 16 / 9;
+  background-color: #131313;
+  border-radius: 10px;
+}
+
+.titleCardSkeleton {
+  border-radius: 6px;
+  width: 200px;
+  height: 25px;
+  margin: 5px;
+  background-color: #131313;
+}
+
+.linkLoad span {
+  display: block;
+  width: 174px;
+  height: 32px;
+  background-color: #131313;
+  border-radius: 6px;
+}

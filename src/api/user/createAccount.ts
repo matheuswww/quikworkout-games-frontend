@@ -57,7 +57,7 @@ export default async function CreateAccount(params: Params): Promise<CreateAccou
 
     return "error"
   } catch (err) {
-    console.error("Erro ao tentar criar conta:", err)
+    console.error("Error trying createAcount:", err)
     return "error"
   }
 }
