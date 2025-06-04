@@ -15,7 +15,7 @@ export default async function HasTicket(): Promise<HasTicketResponse> {
 
   try {
     const response = await fetch(url, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -36,6 +36,7 @@ export default async function HasTicket(): Promise<HasTicketResponse> {
       }
     }
 
+    if (status == 404) return 404
     if (status == 401) return 401
     if (status == 500) return 500
 

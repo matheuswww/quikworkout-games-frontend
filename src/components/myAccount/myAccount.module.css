@@ -338,3 +338,16 @@
   background-color: #131313;
   border-radius: 6px;
 }
+
+.msg {
+  width: 350px;
+  font-weight: 600;
+}
+
+.msg a {
+  color: white;
+}
+
+.desqualified {
+  width: 350px;
+}

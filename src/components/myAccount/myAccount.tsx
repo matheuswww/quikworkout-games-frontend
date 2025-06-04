@@ -10,10 +10,11 @@ import SkeletonImage from "../skeletonImage/skeletonImage";
 import GetParticipations, { GetParticipationsResponse } from "@/api/user/getParticipations";
 import EnterAccount from "@/api/user/enterAccount";
 import { quikworkoutPath } from "@/api/quikworkoutPath";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import VideoThumb from "@/app/video/videoThumb";
 import GetEdition, { GetEditionResponse } from "@/api/edition/getEdition";
 import Link from "next/link";
+import VideoSent from "@/api/participant/videoSent";
 
 interface props {
   userCookieName?: string;
@@ -30,6 +31,8 @@ export default function MyAccountPage({...props}: props) {
   const [cookie, setCookie] = useState<boolean>(false)
   const [loadMore, setLoadMore] = useState<boolean>(false)
   const [load, setLoad] = useState<boolean>(false)
+  const [sent, setSent] = useState<boolean>(false)
+  const searchParams = useSearchParams()
 
   async function enterAccount() {
     const res = await EnterAccount()
@@ -83,6 +86,10 @@ export default function MyAccountPage({...props}: props) {
 
   useEffect(() => {
     if (cookie) {
+      const sent = searchParams.get("sent")
+      if (sent == "true") {
+        setSent(true)
+      }
       (async function() {
         const res = await GetAccount()
         if(res == 401) {
@@ -113,12 +120,39 @@ export default function MyAccountPage({...props}: props) {
         }
       }());
       (async function() {
-        const res = await GetEdition()
+        const res = await GetEdition({
+          limit: 1,
+        })
         setGetEditionResponse(res)
       }())
     }
   }, [cookie])
   
+  useEffect(() => {
+   (async function() {
+    if (getEditionResponse && typeof getEditionResponse == "object" && getParticipationsResponse &&  typeof getParticipationsResponse == "object" && sent) {
+      const res = await VideoSent({ video_id: getParticipationsResponse.participations[0].video_id })
+      if(res == 401) {
+        await deleteCookie("userGames")
+        enterAccount()
+        window.location.reload()
+        return
+      }
+      if(res == "error" || res == 500) {
+        setSent(false)
+        setGetEditionResponse("error")
+        setGetUserResponse("error")
+        return
+      }
+      window.location.href = process.env.NEXT_PUBLIC_URL+"/conta/minha-conta"
+      return
+    }
+   }())
+   if(getParticipationsResponse && typeof getParticipationsResponse != "object" && sent) {
+    setSent(false)
+   }
+  }, [getEditionResponse, getParticipationsResponse])
+
   useEffect(() => {
     async function more(cursor: string) {
         if (loadMore && !load) {
@@ -149,10 +183,10 @@ export default function MyAccountPage({...props}: props) {
         }
      
         setGetParticipationsResponse(prev => {
-          if (prev && typeof prev == "object") {
+          if (prev && typeof prev == "object" && prev.participations) {
             return {
               participations: [...prev.participations, ...res.participations],
-              user: prev.user
+              user: res.user,
             }
           }
           return res
@@ -160,7 +194,7 @@ export default function MyAccountPage({...props}: props) {
         
         setLoad(false)
         setLoadMore(false)
-        if (document.documentElement.scrollHeight <= window.innerHeight) {
+        if (document.documentElement.scrollHeight <= window.innerHeight && res.participations) {
           more(res.participations[res.participations.length - 1].createdAt);
         }
       }
@@ -197,47 +231,61 @@ export default function MyAccountPage({...props}: props) {
         : <p>Parece que houve um erro, tente recarregar a página</p>
       }
 
-        {getEditionResponse == null ? 
+        {getEditionResponse == null || getParticipationsResponse == null ? 
         <div className={styles.linkLoad}>
           <span></span>
         </div>
-        : (getEditionResponse && typeof getEditionResponse == "object" && getEditionResponse.length > 0) && 
+        : (getEditionResponse && typeof getEditionResponse == "object") && 
         !isPastDate(getEditionResponse[0].closing_date) && 
+        (getParticipationsResponse && typeof getParticipationsResponse == "object" && ((getParticipationsResponse.participations[0].edition != getEditionResponse[0].number) || (!getParticipationsResponse.participations[0].sent && !getParticipationsResponse.participations[0].video)) ) &&
         <Link href={"/participar"} className={styles.link} aria-label="carregando link" tabIndex={0}>Participar {getEditionResponse[0].number}ª edição</Link> }
 
         <h2 className={styles.h2}>Edições participadas</h2>
 
-        {(getParticipationsResponse && typeof getParticipationsResponse == "object") ? <div className={styles.editions}>
+        {(getParticipationsResponse && typeof getParticipationsResponse == "object" && !sent) ? <div className={styles.editions}>
           {getParticipationsResponse.participations.map((participation) => (
             <React.Fragment key={participation.edition}>
               <div className={styles.card}>
-              <h3 className={styles.titleCard}>Edição - {participation.edition}</h3>
-              
-              <VideoThumb video={participation.video} thumbnail={participation.thumbnail_url} width={350} />
-
-              <div className={styles.videoInfo}>
-                <div className={styles.videoUserImage}>
-                <SkeletonImage src={getParticipationsResponse.user.photo ? getParticipationsResponse.user.photo : "/img/avatar.png"} alt={getParticipationsResponse.user.name} width={40} height={40} className={styles.avatarVideo} skeletonClassName={styles.avatarVideoSkeleton} />
-                </div>
-                <div className={styles.userContent}>
-                  <p className={styles.videoTitle}>{participation.title}</p>
-                  <p className={styles.userName}>{getParticipationsResponse.user.user}</p>
-                </div>
-                {participation.user_time && <>
-                  <p className={styles.user_time}>{participation.user_time}</p>
-                  <Image src="/img/timer.png" alt="ícone de cronômetro" width={20} height={20} />
-                </>}
+                <h3 className={styles.titleCard}>Edição - {participation.edition}</h3>
+                {
+                  (participation.sent && participation.video) ?
+                  <>
+                    <VideoThumb video={participation.video} thumbnail={participation.thumbnail_url} width={350} />
+                    <div className={styles.videoInfo}>
+                      <div className={styles.videoUserImage}>
+                      <SkeletonImage src={getParticipationsResponse.user.photo ? getParticipationsResponse.user.photo : "/img/avatar.png"} alt={getParticipationsResponse.user.name} width={40} height={40} className={styles.avatarVideo} skeletonClassName={styles.avatarVideoSkeleton} />
+                      </div>
+                      <div className={styles.userContent}>
+                        <p className={styles.videoTitle}>{participation.title}</p>
+                        <p className={styles.userName}>{getParticipationsResponse.user.user}</p>
+                      </div>
+                      {participation.user_time && <>
+                        <p className={styles.user_time}>{participation.user_time}</p>
+                        <Image src="/img/timer.png" alt="ícone de cronômetro" width={20} height={20} />
+                      </>}
+                    </div>
+                    <div className={styles.footer}>
+                      {!participation.desqualified ? 
+                      <>
+                        {participation.placing && <p className={styles.placement}>Colocação: {participation.placing}º lugar</p>}
+                        {participation.gain && <p className={styles.gains}>Ganho: <span className={10 > 0 ? styles.green : styles.yellow}>R${participation.gain}</span></p>}
+                        {!participation.checked && <p className={styles.analisy}>Vídeo em análise <br /> Estamos verificando o conteúdo do seu vídeo</p>}
+                      </>
+                      :
+                      <p className={styles.desqualified}>{participation.desqualified}</p>
+                      }
+                    </div>
+                  </>
+                : (participation.sent && !participation.video) ?
+                  <p key={participation.edition} className={styles.msg}>Estamos processando seu vídeo</p>
+                :
+                  <p key={participation.edition} className={styles.msg}>Parece que houve um erro ao processar seu vídeo, envie novamente por este <Link href={"/participar"}>link</Link></p>
+                }  
               </div>
-              <div className={styles.footer}>
-                {participation.placing && <p className={styles.placement}>Colocação: {participation.placing}º lugar</p>}
-                {participation.gain && <p className={styles.gains}>Ganho: <span className={10 > 0 ? styles.green : styles.yellow}>R${participation.gain}</span></p>}
-                {!participation.checked && <p className={styles.analisy}>Vídeo em análise <br /> Estamos verificando o conteúdo do seu vídeo</p>}
-              </div>
-            </div>
             </React.Fragment>
           ))}
         </div> 
-        : !getParticipationsResponse ?
+        : (!getParticipationsResponse || sent) ?
         <div className={styles.editions} aria-label="carregando edições" tabIndex={0}>
           {
             [0,1,2].map(() => {
@@ -262,7 +310,7 @@ export default function MyAccountPage({...props}: props) {
           }
         </div>
        : 
-        getParticipationsResponse == 404 ? 
+        (getParticipationsResponse == 404) ? 
         <p>Você ainda não participou de nenhuma edição</p> : 
         <p>Parece que houve um erro, tente recarregar a página</p>
         }

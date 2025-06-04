@@ -3,6 +3,7 @@ import { userPath } from "./userPath";
 
 interface GetParticipationsParams {
   cursor?: string
+  limit?: number
   width?: number
   autoplay?: boolean
   muted?: boolean
@@ -12,11 +13,13 @@ interface GetParticipationsParams {
 interface Participations {
   participations: Participation[]
   user: User
+
 }
 
 interface Participation {
   video: string | null
   thumbnail_url: string | null
+  video_id: string
   title: string | null
   edition: number
   placing: number | null
@@ -24,6 +27,7 @@ interface Participation {
   gain: number | null
   desqualified: string | null
   checked: boolean
+  sent: boolean
   createdAt: string
 }
 
@@ -47,6 +51,7 @@ export type GetParticipationsResponse =
     const query = new URLSearchParams()
   
     if (params.cursor) query.append("cursor", params.cursor)
+    if (params.limit) query.append("width", params.limit.toString())
     if (params.width) query.append("width", params.width.toString())
     if (params.autoplay) query.append("autoplay", String(+params.autoplay))
     if (params.muted) query.append("muted", String(+params.muted))
